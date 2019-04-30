@@ -16,30 +16,22 @@
 
         public static void Transform(this Arguments args)
         {
-            // safer to write to a new stream
-            // in case the source and target are same
-            // and let the source close first
-            using (var stream = new MemoryStream())
+            using (var source = new XmlTransformableDocument
             {
-                using (var source = new XmlTransformableDocument
-                {
-                    PreserveWhitespace = true
-                })
-                {
-                    source.Load(args.SourceFilename);
+                PreserveWhitespace = true
+            })
+            {
+                source.Load(args.SourceFilename);
 
-                    using (var transform = new XmlTransformation(args.TransformFilename))
+                using (var transform = new XmlTransformation(args.TransformFilename))
+                {
+                    if (transform.Apply(source))
                     {
-                        if (transform.Apply(source))
+                        using (var target = new StreamWriter(args.TargetFilename))
                         {
-                            source.Save(stream);
+                            source.Save(target);
                         }
                     }
-                }
-
-                using (var target = new FileStream(args.TargetFilename, FileMode.OpenOrCreate))
-                {
-                    stream.WriteTo(target);
                 }
             }
         }
