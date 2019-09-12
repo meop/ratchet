@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ratchet", "Ratchet\Ratchet.csproj", "{49B11E87-8DFC-4F4C-8327-03A54D96E0AC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ratchet.Tests", "Ratchet.Tests\Ratchet.Tests.csproj", "{C6BEA056-F536-4776-824E-325742971B0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{49B11E87-8DFC-4F4C-8327-03A54D96E0AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49B11E87-8DFC-4F4C-8327-03A54D96E0AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49B11E87-8DFC-4F4C-8327-03A54D96E0AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BEA056-F536-4776-824E-325742971B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BEA056-F536-4776-824E-325742971B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BEA056-F536-4776-824E-325742971B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BEA056-F536-4776-824E-325742971B0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
