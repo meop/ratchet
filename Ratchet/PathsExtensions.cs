@@ -1,11 +1,13 @@
-﻿namespace Ratchet {
-    using Microsoft.Web.XmlTransform;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using static System.FormattableString;
+﻿using Microsoft.Web.XmlTransform;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using static System.FormattableString;
 
+[assembly: InternalsVisibleTo("Ratchet.Tests")]
+namespace Ratchet {
     internal static class PathsExtensions {
         public static void Print (
             this Paths paths
@@ -56,7 +58,7 @@
                             Console.WriteLine(Invariant($" Applied: {transformFile}"));
                         } else {
                             Console.WriteLine(Invariant($" Failed: {transformFile}"));
-                            Console.WriteLine("Bailing..");
+                            Console.WriteLine("Exiting..");
                             return;
                         }
                     }

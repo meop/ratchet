@@ -1,9 +1,11 @@
-﻿namespace Ratchet {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using static System.FormattableString;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using static System.FormattableString;
 
+[assembly: InternalsVisibleTo("Ratchet.Tests")]
+namespace Ratchet {
     internal static class StringExtensions {
         private static bool IsFileBasedOn (
             this string transform,
@@ -18,13 +20,13 @@
             this string transform,
             string source
         ) =>
-            IsFileBasedOn(transform, source, AreFilenamePartsUltimatelyBasedOn);
+            transform.IsFileBasedOn(source, AreFilenamePartsUltimatelyBasedOn);
 
         public static bool IsFileDirectlyBasedOn (
             this string transform,
             string source
         ) =>
-            IsFileBasedOn(transform, source, AreFilenamePartsDirectlyBasedOn);
+            transform.IsFileBasedOn(source, AreFilenamePartsDirectlyBasedOn);
 
         public static bool AreFilenamePartsUltimatelyBasedOn (
             this IReadOnlyList<string> transform,
