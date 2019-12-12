@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using static System.FormattableString;
 
 [assembly: InternalsVisibleTo("Ratchet.Tests")]
@@ -47,28 +48,44 @@ namespace Ratchet {
         ) {
             var transformFiles = paths.GetTransformFiles();
 
-            using (var source = new XmlTransformableDocument {
-                PreserveWhitespace = true
-            }) {
-                source.Load(paths.Source);
+            // preserving whitespace seems buggy when not
+            // letting the library handle streams itself
+            // looked through the MS source, did not see a reason
+            // why this was this case
+            using var document = new XmlTransformableDocument {
+                PreserveWhitespace = paths.Source == paths.Target
+            };
+            document.Load(paths.Source);
 
-                foreach (var transformFile in transformFiles) {
-                    using (var transform = new XmlTransformation(transformFile)) {
-                        if (transform.Apply(source)) {
-                            Console.WriteLine(Invariant($" Applied: {transformFile}"));
-                        } else {
-                            Console.WriteLine(Invariant($" Failed: {transformFile}"));
-                            Console.WriteLine("Exiting..");
-                            return;
-                        }
-                    }
-                }
-
-                using (var target = new StreamWriter(paths.Target)) {
-                    source.Save(target);
-                    Console.WriteLine(Invariant($" Saved: {paths.Target}"));
+            foreach (var transformFile in transformFiles) {
+                using var transform = new XmlTransformation(transformFile);
+                if (transform.Apply(document)) {
+                    Console.WriteLine(Invariant($" Applied: {transformFile}"));
+                } else {
+                    Console.WriteLine(Invariant($" Failed: {transformFile}"));
+                    Console.WriteLine("Exiting..");
+                    return;
                 }
             }
+
+            // the Save function does not Dispose its underlying Stream right away
+            // but, using custom Stream objects and calling dispose on them
+            // cannot be done because of issue above with whitespace
+            // retries are not limited, since users can kill this program if they want
+            var saved = false;
+            Console.Write(" Saving..");
+            while (!saved) {
+                try {
+                    document.Save(paths.Target);
+                    saved = true;
+                } catch (IOException) {
+                    Console.Write(".");
+                }
+                Thread.Sleep(100);
+            }
+            Console.WriteLine();
+
+            Console.WriteLine(Invariant($" Saved: {paths.Target}"));
         }
 
         public static Stack<string> GetTransformFiles (

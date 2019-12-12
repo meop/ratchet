@@ -7,12 +7,10 @@ namespace Ratchet
     {
         private static void Main(
             string[] args
-        )
-        {
+        ) {
             if (args == null
                 || args.Length < 2
-            )
-            {
+            ) {
                 Console.WriteLine("Usage:");
                 Console.WriteLine(Invariant($"{AppDomain.CurrentDomain.FriendlyName}") +
                     " sourceFilePath" +
@@ -22,8 +20,7 @@ namespace Ratchet
                 return;
             }
 
-            if (args[0] == args[1])
-            {
+            if (args[0] == args[1]) {
                 Console.WriteLine("Requested Source and Transform were the same:");
                 Console.WriteLine(args[0]);
                 Console.WriteLine(args[1]);
@@ -31,8 +28,7 @@ namespace Ratchet
                 return;
             }
 
-            var paths = new Paths
-            {
+            var paths = new Paths {
                 Source = args[0],
                 Transform = args[1],
                 Target = args.Length > 2 ? args[2] : args[0]
